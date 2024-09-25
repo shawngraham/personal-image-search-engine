@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Search Results</title>
+    <style>
+        .result {
+            margin-bottom: 20px;
+        }
+        .result img {
+            max-width: 300px;
+            height: auto;
+            display: block;
+            margin-top: 10px;
+        }
+        .console { background: #000; color: #00FF00; padding: 10px; border-radius: 5px; height: 300px; overflow-y: scroll; margin-top: 20px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Search Results</h1>
+    {% for result in results %}
+        <div class="result">
+            <p>Image: {{ result.id }}</p>
+            <p>Score: {{ result.score }}</p>
+            <img src="{{ url_for('static', filename='images/' ~ result.id) }}" alt="{{ result.id }}">
+        </div>
+    {% endfor %}
+    <a href="{{ url_for('index') }}">Back to Home</a>
+
+    <div class="console" id="console-output">{{ output|safe }}</div>
+</body>
+</html>

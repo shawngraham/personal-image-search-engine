@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Your Image Search</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: auto; padding: 20px; }
+        h1, h2 { color: #333; }
+        form { margin-bottom: 20px; }
+        .upload-section, .search-section, .visually-similar-section { margin-bottom: 30px; }
+        input[type="submit"] { padding: 10px 20px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        input[type="submit"]:hover { background-color: #0056b3; }
+        
+        /* Spinner styling */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #007BFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: auto;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Select Images</h1>
+        <div class="upload-section">
+            <form id="upload-form" action="{{ url_for('upload_files') }}" method="post" enctype="multipart/form-data">
+                <input type="file" name="files[]" multiple webkitdirectory directory>
+                <input type="submit" value="Confirm Selection">
+            </form>
+        </div>
+
+        <div>
+            <a href="{{ url_for('embed') }}" id="embed-link">Create Image Embedding From Those Images</a>
+            <p>(This is only necessary the first time you run all this)</p>
+
+        </div>
+
+        <h2>Vibe Search</h2>
+        <div class="search-section">
+            <form id="search-form" action="{{ url_for('search') }}" method="post">
+                <input type="text" name="query" placeholder="Enter search query">
+                <input type="submit" value="Search">
+            </form>
+        </div>
+
+        <h2>Visually Similar Image Search</h2>
+        <div class="visually-similar-section">
+            <form id="visually-similar-form" action="{{ url_for('visually_similar_upload') }}" method="post" enctype="multipart/form-data">
+                <input type="file" name="file">
+                <input type="submit" value="Search">
+            </form>
+        </div>
+
+        <!-- Spinner -->
+        <div class="spinner" id="spinner"></div>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var forms = ["upload-form", "search-form", "visually-similar-form"];
+            var spinner = document.getElementById("spinner");
+            var embedLink = document.getElementById("embed-link");
+
+            forms.forEach(function(formId) {
+                var form = document.getElementById(formId);
+                if (form) {
+                    form.addEventListener("submit", function() {
+                        spinner.style.display = "block";
+                    });
+                }
+            });
+
+            if (embedLink) {
+                embedLink.addEventListener("click", function() {
+                    spinner.style.display = "block";
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
